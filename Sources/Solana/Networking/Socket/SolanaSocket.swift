@@ -142,6 +142,7 @@ extension SolanaSocket: WebSocketDelegate {
         case .viabilityChanged: break
         case .reconnectSuggested: break
         case .cancelled: break
+        case .peerClosed: break
         case .error(let error): break
             self.delegate?.error(error: error)
         }
@@ -149,6 +150,9 @@ extension SolanaSocket: WebSocketDelegate {
 
     private func log(event: WebSocketEvent) {
         switch event {
+            
+        case .connected(let headers):
+            if enableDebugLogs { debugPrint("conected with headers \(headers)") }
         case .connected(let headers):
             if enableDebugLogs { debugPrint("conected with headers \(headers)") }
         case .disconnected(let reason, let code):
@@ -167,6 +171,7 @@ extension SolanaSocket: WebSocketDelegate {
             if enableDebugLogs { debugPrint("reconnectSuggested \(reconnect)") }
         case .cancelled:
             if enableDebugLogs { debugPrint("cancelled") }
+        case .peerClosed: break
         case .error(let error):
             if enableDebugLogs { debugPrint("error \(error?.localizedDescription ?? "")") }
         }
